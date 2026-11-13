@@ -29,16 +29,38 @@ Para ejecutar el proyecto se necesita:
 3. Crear un archivo `.env` tomando como referencia `.env.example`.
 4. Configurar los datos de conexión a MySQL:
 
-```env
+5.Preparación de la base de datos MySQL
+
+Antes de ejecutar la aplicación, es necesario tener instalado y funcionando MySQL.
+
+Abrir MySQL Workbench o el programa que utilices para administrar MySQL.
+
+Conectarse al servidor de base de datos.
+
+Crear la base de datos catalogo_tienda, si todavía no existe.
+
+Ejecutar el archivo SQL del proyecto que contiene la estructura de las tablas y los datos iniciales.
+
+Verificar que las tablas se hayan creado correctamente.
+
+La aplicación utiliza esta base de datos para almacenar y consultar la información de los productos, usuarios, pedidos y demás datos necesarios para su funcionamiento.
+
+Configuración de las variables de entorno
+
+Crear un archivo .env tomando como referencia .env.example y configurar los datos de conexión a MySQL:
+
 PORT=3000
 DB_HOST=localhost
 DB_PORT=3306
 DB_USER=tu_usuario
 DB_PASSWORD=tu_contraseña
 DB_NAME=catalogo_tienda
-```
 
-5. Preparar la base de datos `catalogo_tienda` en MySQL con la estructura necesaria para la aplicación.
+Se deben utilizar las credenciales correspondientes al servidor MySQL instalado en el equipo.
+
+Importante: El servidor MySQL debe estar iniciado para que StoreApp pueda conectarse correctamente.
+
+
 6. Instalar las dependencias:
 
 ```bash
