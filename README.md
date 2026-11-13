@@ -29,7 +29,7 @@ Para ejecutar el proyecto se necesita:
 3. Crear un archivo `.env` tomando como referencia `.env.example`.
 4. Configurar los datos de conexión a MySQL:
 
-5.Preparación de la base de datos MySQL
+ 5.Preparación de la base de datos MySQL
 
 Antes de ejecutar la aplicación, es necesario tener instalado y funcionando MySQL.
 
