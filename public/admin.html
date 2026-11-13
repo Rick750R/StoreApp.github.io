@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Administración de productos de StoreApp.">
+  <title>Administración | StoreApp</title>
+  <link rel="stylesheet" href="/styles.css">
+  <link rel="stylesheet" href="/admin.css">
+  <script src="/admin.js" defer></script>
+</head>
+<body class="admin-body">
+  <header class="topbar">
+    <a class="brand" href="/" aria-label="StoreApp inicio"><span class="brand-icon">S</span> StoreApp</a>
+    <nav class="main-nav"><a href="/">Ver tienda</a><a href="#orders-management">Pedidos</a></nav>
+    <div class="topbar-actions"><span id="admin-current-user" class="current-user"></span><button id="admin-logout" class="text-button">Cerrar sesión</button></div>
+  </header>
+
+  <main class="admin-main">
+    <div class="admin-heading">
+      <div><p class="eyebrow">GESTIÓN DE LA TIENDA</p><h1>Panel de administración</h1><p>Agrega productos, actualiza precios y controla las existencias del catálogo.</p></div>
+      <a class="secondary-button admin-back" href="/">← Volver a la tienda</a>
+    </div>
+
+    <div id="admin-message" class="message" role="status" aria-live="polite"></div>
+
+    <section class="admin-layout">
+      <article class="admin-card product-form-card">
+        <div class="admin-card-heading"><div><p class="eyebrow">CATÁLOGO</p><h2 id="form-title">Agregar producto</h2></div><span class="admin-icon">＋</span></div>
+        <form id="product-form">
+          <input type="hidden" name="id">
+          <label>Nombre del producto<input name="nombre" required minlength="2" maxlength="120" placeholder="Ej. Mouse inalámbrico"></label>
+          <label>Descripción<textarea name="descripcion" required maxlength="5000" rows="3" placeholder="Describe las características del producto"></textarea></label>
+          <div class="admin-form-grid">
+            <label>Categoría<input name="categoria" required maxlength="60" placeholder="Ej. Accesorios"></label>
+            <label>Precio (MXN)<input name="precio" type="number" required min="0" step="0.01" placeholder="599.00"></label>
+            <label>Existencias<input name="stock" type="number" required min="0" step="1" placeholder="10"></label>
+          </div>
+          <div class="image-input-section">
+            <strong>Imagen del producto</strong>
+            <p>Puedes pegar una URL o subir una imagen desde tu computadora. El archivo seleccionado tendrá prioridad.</p>
+            <label>URL de imagen<input name="imageUrl" type="url" placeholder="https://sitio.com/imagen.jpg"></label>
+            <label>Subir imagen (PNG, JPG o WEBP)<input name="imageFile" type="file" accept="image/png,image/jpeg,image/webp"></label>
+            <small>La imagen debe pesar máximo 2 MB.</small>
+            <div id="image-preview" class="image-preview hidden"><img id="preview-image" alt="Vista previa de la imagen"><span>Vista previa</span></div>
+          </div>
+          <div class="admin-checks">
+            <label class="check-label"><input name="destacado" type="checkbox"> Mostrar como destacado</label>
+            <label class="check-label"><input name="activo" type="checkbox" checked> Producto activo</label>
+          </div>
+          <div class="form-actions"><button class="primary-button" id="save-product" type="submit">Guardar producto</button><button class="secondary-button hidden" id="cancel-edit" type="button">Cancelar edición</button></div>
+        </form>
+      </article>
+
+      <article class="admin-card products-card">
+        <div class="admin-card-heading"><div><p class="eyebrow">INVENTARIO</p><h2>Productos registrados</h2></div><button class="secondary-button refresh-button" id="refresh-products" type="button">Actualizar</button></div>
+        <div class="admin-table-wrap">
+          <table class="admin-table">
+            <thead><tr><th>Producto</th><th>Precio</th><th>Stock</th><th>Estado</th><th>Acciones</th></tr></thead>
+            <tbody id="products-table"><tr><td colspan="5" class="table-empty">Cargando productos…</td></tr></tbody>
+          </table>
+        </div>
+        <p class="admin-footnote">Al desactivar un producto, dejará de aparecer en la tienda, pero conservará su registro y el historial de pedidos.</p>
+      </article>
+    </section>
+
+    <section class="admin-card admin-orders-card" id="orders-management">
+      <div class="admin-card-heading">
+        <div><p class="eyebrow">VENTAS Y ENTREGAS</p><h2>Pedidos de clientes</h2><p class="admin-section-description">Consulta los productos, la dirección de entrega y actualiza el seguimiento de cada pedido.</p></div>
+        <button class="secondary-button refresh-button" id="refresh-orders" type="button">Actualizar pedidos</button>
+      </div>
+      <div id="orders-admin-message" class="message" role="status" aria-live="polite"></div>
+      <div id="admin-orders-list" class="admin-orders-list"><div class="table-empty">Cargando pedidos…</div></div>
+    </section>
+  </main>
+  <footer><a class="brand footer-brand" href="/"><span class="brand-icon">S</span> StoreApp</a><p>Administración de productos y pedidos</p><span>© <span id="admin-year"></span> StoreApp</span></footer>
+</body>
+</html>

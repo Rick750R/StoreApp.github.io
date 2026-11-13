@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Consulta el estado y los detalles de tus pedidos de StoreApp.">
+  <title>Mis pedidos | StoreApp</title>
+  <link rel="stylesheet" href="/styles.css">
+  <link rel="stylesheet" href="/mis-pedidos.css">
+  <script src="/mis-pedidos.js" defer></script>
+</head>
+<body class="orders-page-body">
+  <header class="topbar">
+    <a class="brand" href="/" aria-label="StoreApp inicio"><span class="brand-icon">S</span> StoreApp</a>
+    <nav class="main-nav"><a href="/#catalogo">Catálogo</a><a href="/#ofertas">Destacados</a></nav>
+    <div class="topbar-actions orders-page-actions">
+      <span id="orders-current-user" class="current-user"></span>
+      <button id="orders-logout" class="text-button" type="button">Salir</button>
+      <a class="secondary-button" href="/">Volver a la tienda</a>
+    </div>
+  </header>
+
+  <main class="orders-page-main">
+    <section class="orders-page-heading">
+      <div>
+        <p class="eyebrow">TU CUENTA STOREAPP</p>
+        <h1>Mis pedidos</h1>
+        <p>Consulta tus compras, el estado de entrega y la información del pago.</p>
+      </div>
+      <button type="button" id="refresh-orders" class="secondary-button">Actualizar pedidos</button>
+    </section>
+
+    <section class="account-summary orders-account-summary">
+      <div><span>Cuenta</span><strong id="account-name"></strong></div>
+      <div><span>Correo electrónico</span><strong id="account-email"></strong></div>
+    </section>
+    <div id="orders-message" class="message" role="status" aria-live="polite"></div>
+    <div id="orders-list" class="orders-list"><div class="empty-state">Cargando tus pedidos…</div></div>
+    <p class="orders-footnote">Los pedidos se conservan en tu historial. Si el administrador cancela uno, se elimina y sus unidades regresan al inventario.</p>
+  </main>
+
+  <footer><a class="brand footer-brand" href="/"><span class="brand-icon">S</span> StoreApp</a><p>Proyecto académico · Catálogo de productos</p><span>© <span id="orders-year"></span> StoreApp</span></footer>
+
+  <dialog id="payment-dialog" class="checkout-dialog payment-dialog">
+    <div class="dialog-heading"><div><p class="eyebrow">ENTORNO DE PRUEBA</p><h2>Simulación de pago</h2></div><button type="button" id="close-payment" class="icon-button" aria-label="Cerrar">×</button></div>
+    <p class="muted">Esta prueba no se conecta con un banco ni realiza cargos. No ingreses datos reales de tarjetas.</p>
+    <div class="payment-demo-summary" id="payment-order-summary"></div>
+    <div class="payment-demo-actions">
+      <button type="button" class="primary-button full-width" data-payment-result="approved">Simular pago aprobado</button>
+      <button type="button" class="secondary-button full-width" data-payment-result="rejected">Simular pago rechazado</button>
+    </div>
+    <div id="payment-demo-message" class="message" role="status" aria-live="polite"></div>
+  </dialog>
+</body>
+</html>
