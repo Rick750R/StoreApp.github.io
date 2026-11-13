@@ -2,114 +2,173 @@
 
 ## Descripción del proyecto
 
-StoreApp es una aplicación web desarrollada para la consulta y compra de productos tecnológicos. Permite a los usuarios visualizar un catálogo, registrarse, iniciar sesión, agregar productos al carrito y realizar pedidos.
+StoreApp es una aplicación web desarrollada para la consulta y compra de productos tecnológicos. Permite a los usuarios visualizar un catálogo de productos, registrarse, iniciar sesión, agregar artículos al carrito y realizar pedidos.
 
-También cuenta con un apartado de administrador para gestionar los productos disponibles en la tienda.
+También cuenta con un apartado de administrador que permite gestionar los productos disponibles en la tienda.
 
 ## Tecnologías utilizadas
 
 - Node.js
 - Express
 - MySQL
-- HTML, CSS y JavaScript
+- HTML
+- CSS
+- JavaScript
 - Docker
 
 ## Requisitos
 
-Para ejecutar el proyecto se necesita:
+Para instalar y ejecutar el proyecto se necesita:
 
 - Node.js y npm.
-- MySQL.
-- Docker Desktop (para ejecutarlo mediante contenedores).
+- MySQL Server.
+- MySQL Workbench (opcional, para administrar la base de datos).
+- Docker Desktop (para ejecutar la aplicación mediante contenedores).
 
-## Configuración del proyecto
+## 1. Descargar el proyecto
 
-1. Descargar o clonar el repositorio.
-2. Abrir la carpeta del proyecto.
-3. Crear un archivo `.env` tomando como referencia `.env.example`.
-4. Configurar los datos de conexión a MySQL:
+Descargar el repositorio desde GitHub:
 
- 5.Preparación de la base de datos MySQL
+https://github.com/Rick750R/StoreApp.github.io
 
-Antes de ejecutar la aplicación, es necesario tener instalado y funcionando MySQL.
+Seleccionar la opción **Code → Download ZIP** y extraer el archivo en una carpeta del equipo.
 
-Abrir MySQL Workbench o el programa que utilices para administrar MySQL.
+También se puede clonar el repositorio utilizando Git.
 
-Conectarse al servidor de base de datos.
+## 2. Preparación de la base de datos MySQL
 
-Crear la base de datos catalogo_tienda, si todavía no existe.
+Antes de ejecutar la aplicación, es necesario preparar la base de datos.
 
-Ejecutar el archivo SQL del proyecto que contiene la estructura de las tablas y los datos iniciales.
+1. Iniciar el servidor MySQL.
+2. Abrir MySQL Workbench y conectarse al servidor.
+3. Crear la base de datos con el nombre `catalogo_tienda`, si todavía no existe.
+4. Abrir el archivo SQL del proyecto ubicado en la carpeta `database`.
+5. Ejecutar las instrucciones SQL para crear las tablas y preparar la estructura necesaria.
+6. Verificar que las tablas se hayan creado correctamente.
 
-Verificar que las tablas se hayan creado correctamente.
+La base de datos almacena la información de los productos, usuarios, pedidos y demás datos utilizados por la aplicación.
 
-La aplicación utiliza esta base de datos para almacenar y consultar la información de los productos, usuarios, pedidos y demás datos necesarios para su funcionamiento.
+**Importante:** La base de datos debe estar creada y el servidor MySQL debe permanecer activo para que la aplicación pueda funcionar correctamente.
 
-Configuración de las variables de entorno
+## 3. Configuración de variables de entorno
 
-Crear un archivo .env tomando como referencia .env.example y configurar los datos de conexión a MySQL:
+En la carpeta principal del proyecto se encuentra el archivo `.env.example`.
 
+Crear una copia de este archivo y nombrarla `.env`.
+
+Dentro del archivo `.env` configurar los datos de conexión a MySQL:
+
+```env
 PORT=3000
 DB_HOST=localhost
 DB_PORT=3306
 DB_USER=tu_usuario
 DB_PASSWORD=tu_contraseña
 DB_NAME=catalogo_tienda
+```
 
-Se deben utilizar las credenciales correspondientes al servidor MySQL instalado en el equipo.
+Reemplazar los valores de ejemplo por las credenciales correspondientes al servidor MySQL del equipo.
 
-Importante: El servidor MySQL debe estar iniciado para que StoreApp pueda conectarse correctamente.
+## 4. Instalación de dependencias
 
-
-6. Instalar las dependencias:
+Abrir una terminal dentro de la carpeta del proyecto y ejecutar el siguiente comando:
 
 ```bash
 npm install
 ```
 
-## Ejecutar la aplicación con Node.js
+Este comando instala las dependencias necesarias para el funcionamiento de la aplicación.
 
-Después de configurar las variables de entorno y la base de datos, ejecutar:
+## 5. Ejecutar la aplicación con Node.js
+
+Una vez configurada la base de datos e instaladas las dependencias, iniciar el servidor con:
 
 ```bash
 npm start
 ```
 
-Abrir en el navegador:
+Cuando el servidor esté funcionando, abrir el navegador y acceder a:
 
-```text
 http://localhost:3000
-```
 
-## Ejecutar la aplicación con Docker
+## 6. Ejecutar la aplicación mediante Docker
 
-Primero, construir la imagen:
+También es posible ejecutar StoreApp utilizando Docker.
+
+Primero, comprobar que Docker Desktop esté iniciado y que MySQL se encuentre funcionando en el equipo.
+
+### Construir la imagen
+
+Desde la carpeta principal del proyecto, ejecutar:
 
 ```bash
 docker build -t storeapp .
 ```
 
-Después, ejecutar el contenedor:
+Este comando construye la imagen de Docker utilizando las instrucciones del archivo Dockerfile.
+
+### Ejecutar el contenedor
+
+Ejecutar el siguiente comando:
 
 ```bash
 docker run -d -p 3000:3000 --env-file .env -e DB_HOST=host.docker.internal --name storeapp-container storeapp
 ```
 
-Abrir en el navegador:
+La configuración `host.docker.internal` permite que el contenedor se comunique con el servidor MySQL instalado en el equipo anfitrión.
 
-```text
+### Acceder a la aplicación
+
+Abrir el navegador y entrar a:
+
 http://localhost:3000
-```
 
-Para comprobar la conexión con el servidor y la base de datos, ingresar a:
+### Comprobar la conexión con MySQL
 
-```text
+Para verificar que el servidor y la base de datos estén disponibles, ingresar a:
+
 http://localhost:3000/api/health
+
+Si la conexión funciona correctamente, se mostrará el siguiente mensaje:
+
+```json
+{
+  "ok": true,
+  "message": "Servidor y base de datos disponibles"
+}
 ```
 
-## Variables de entorno
+## 7. Detener el contenedor
 
-El archivo `.env.example` muestra las variables necesarias para configurar el proyecto sin compartir credenciales reales.
+Para detener la aplicación ejecutada mediante Docker, utilizar:
 
+```bash
+docker stop storeapp-container
+```
 
+Si se desea eliminar el contenedor, ejecutar:
+
+```bash
+docker rm storeapp-container
+```
+
+## 8. Variables y archivos importantes
+
+| Archivo | Descripción |
+|---|---|
+| `server.js` | Archivo principal que inicia el servidor. |
+| `package.json` | Contiene la información y dependencias del proyecto. |
+| `package-lock.json` | Registra las versiones de las dependencias. |
+| `Dockerfile` | Contiene las instrucciones para construir la imagen Docker. |
+| `.dockerignore` | Evita copiar archivos innecesarios al construir la imagen. |
+| `.gitignore` | Evita publicar archivos privados o innecesarios en GitHub. |
+| `.env` | Contiene las variables de entorno privadas. |
+| `.env.example` | Muestra las variables necesarias para configurar el proyecto. |
+| `README.md` | Contiene las instrucciones y documentación del proyecto. |
+
+## 9. Repositorio en GitHub
+
+El código fuente del proyecto se encuentra disponible en el siguiente repositorio:
+
+https://github.com/Rick750R/StoreApp.github.io
 
