@@ -1,0 +1,34 @@
+.orders-page-body{background:#fbfcff;min-height:100vh;display:flex;flex-direction:column}
+.orders-page-main{width:min(1080px,100%);margin:0 auto;padding:48px 28px 70px;flex:1}
+.orders-page-heading{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;margin-bottom:26px}
+.orders-page-heading h1{font:800 clamp(30px,4vw,42px)/1.1 Manrope,sans-serif;letter-spacing:-1.4px;margin:0 0 10px}
+.orders-page-heading p:not(.eyebrow){color:var(--muted);font-size:13px;line-height:1.6;margin:0}
+.orders-page-heading .secondary-button{white-space:nowrap}
+.orders-account-summary{margin-bottom:20px}
+.orders-page-actions{display:flex;align-items:center;gap:14px}
+.orders-page-actions .secondary-button{white-space:nowrap}
+.payment-info{display:flex;flex-wrap:wrap;align-items:center;gap:8px 18px;padding:12px 21px;border-top:1px solid var(--line);font-size:11px;color:var(--muted)}
+.payment-info strong{color:var(--ink)}
+.payment-state{display:inline-flex;align-items:center;border-radius:999px;padding:5px 9px;font-size:10px;font-weight:800;background:#fff4db;color:#8a5a00}
+.payment-state.aprobado_simulado,.payment-state.aprobado{background:#e8f8ef;color:#087443}
+.payment-state.rechazado_simulado,.payment-state.rechazado{background:#fff0ef;color:#b42318}
+.order-payment-action{display:flex;justify-content:flex-end;padding:0 21px 15px}
+.order-payment-action button{font-size:11px;padding:9px 13px}
+.payment-method-fieldset{border:1px solid var(--line);border-radius:13px;padding:14px 16px;margin:14px 0;min-width:0}
+.payment-method-fieldset legend{padding:0 8px;font:800 13px Manrope,sans-serif;color:var(--ink)}
+.payment-method-option{display:flex;align-items:flex-start;gap:11px;padding:9px 2px;font-size:12px;cursor:pointer}
+.payment-method-option input{margin:3px 0 0;accent-color:var(--blue)}
+.payment-method-option span{display:flex;flex-direction:column;gap:4px}
+.payment-method-option strong{font-size:12px}
+.payment-method-option small{font-size:10px;color:var(--muted);line-height:1.5;font-weight:400}
+.payment-dialog{max-width:470px}
+.payment-demo-summary{display:flex;flex-direction:column;gap:6px;background:var(--soft);border:1px solid var(--line);border-radius:12px;padding:15px;margin:16px 0;font-size:12px}
+.payment-demo-summary strong{font:800 16px Manrope,sans-serif}
+.payment-demo-summary small{font-size:10px;line-height:1.5;color:var(--muted)}
+.payment-demo-actions{display:grid;gap:9px;margin:15px 0}
+.payment-demo-actions button{font-size:12px}
+.payment-orders-link{display:inline-block;margin-top:7px;color:var(--blue);font-size:11px;font-weight:700}
+.payment-orders-link:hover{text-decoration:underline}
+.orders-page-body footer{margin-top:auto}
+@media(max-width:700px){.orders-page-main{padding:34px 16px 48px}.orders-page-heading{align-items:flex-start;flex-direction:column}.orders-page-heading button{width:100%}.orders-page-actions .current-user{display:none}.orders-page-actions{gap:8px}.orders-page-actions .secondary-button{font-size:10px;padding:9px}.payment-info{padding:11px 15px}.order-payment-action{padding:0 15px 13px}.order-payment-action button{width:100%}}
+@media(max-width:440px){.orders-page-actions{flex-wrap:wrap;justify-content:flex-end}.orders-page-actions .secondary-button{order:2}.orders-page-actions #orders-logout{order:1}}

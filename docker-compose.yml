@@ -1,0 +1,111 @@
+services:
+  tienda-web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: storeapp-web
+    ports:
+      - "8080:80"
+    depends_on:
+      - usuarios
+      - productos
+      - pedidos
+    volumes:
+      - imagenes_productos:/usr/share/nginx/html/uploads
+    networks:
+      - storeapp-red
+    restart: unless-stopped
+
+  usuarios:
+    build:
+      context: .
+      dockerfile: services/users/Dockerfile
+    container_name: storeapp-usuarios
+    environment:
+      DB_HOST: database
+      DB_PORT: 3306
+      DB_NAME: catalogo_tienda
+      DB_USER: storeapp
+      DB_PASSWORD: ${DB_PASSWORD:-storeapp_password}
+      APP_ENV: ${APP_ENV:-development}
+      STORE_TRANSFER_BANK: ${STORE_TRANSFER_BANK:-Banco de ejemplo}
+      STORE_TRANSFER_BENEFICIARY: ${STORE_TRANSFER_BENEFICIARY:-Beneficiario de ejemplo}
+      STORE_TRANSFER_CLABE: ${STORE_TRANSFER_CLABE:-}
+      STORE_TRANSFER_ACCOUNT: ${STORE_TRANSFER_ACCOUNT:-}
+    depends_on:
+      database:
+        condition: service_healthy
+    networks:
+      - storeapp-red
+    restart: unless-stopped
+
+  productos:
+    build:
+      context: .
+      dockerfile: services/products/Dockerfile
+    container_name: storeapp-productos
+    environment:
+      DB_HOST: database
+      DB_PORT: 3306
+      DB_NAME: catalogo_tienda
+      DB_USER: storeapp
+      DB_PASSWORD: ${DB_PASSWORD:-storeapp_password}
+      APP_ENV: ${APP_ENV:-development}
+    volumes:
+      - imagenes_productos:/var/www/html/uploads
+    depends_on:
+      database:
+        condition: service_healthy
+    networks:
+      - storeapp-red
+    restart: unless-stopped
+
+  pedidos:
+    build:
+      context: .
+      dockerfile: services/orders/Dockerfile
+    container_name: storeapp-pedidos
+    environment:
+      DB_HOST: database
+      DB_PORT: 3306
+      DB_NAME: catalogo_tienda
+      DB_USER: storeapp
+      DB_PASSWORD: ${DB_PASSWORD:-storeapp_password}
+      APP_ENV: ${APP_ENV:-development}
+    depends_on:
+      database:
+        condition: service_healthy
+    networks:
+      - storeapp-red
+    restart: unless-stopped
+
+  database:
+    image: mysql:8.4
+    container_name: storeapp-database
+    ports:
+      - "127.0.0.1:3307:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-root_storeapp_password}
+      MYSQL_DATABASE: catalogo_tienda
+      MYSQL_USER: storeapp
+      MYSQL_PASSWORD: ${DB_PASSWORD:-storeapp_password}
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    volumes:
+      - datos_mysql:/var/lib/mysql
+      - ./database/schema.sql:/docker-entrypoint-initdb.d/001-schema.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost -uroot -p$${MYSQL_ROOT_PASSWORD} --silent"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    networks:
+      - storeapp-red
+    restart: unless-stopped
+
+networks:
+  storeapp-red:
+    driver: bridge
+
+volumes:
+  datos_mysql:
+  imagenes_productos:

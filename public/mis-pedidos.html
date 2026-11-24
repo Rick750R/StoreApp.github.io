@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Consulta el estado y los detalles de tus pedidos de StoreApp.">
+  <title>Mis pedidos | StoreApp</title>
+  <link rel="stylesheet" href="/styles.css">
+  <link rel="stylesheet" href="/mis-pedidos.css">
+  <script src="/mis-pedidos.js" defer></script>
+</head>
+<body class="orders-page-body">
+  <header class="topbar">
+    <a class="brand" href="/" aria-label="StoreApp inicio"><span class="brand-icon">S</span> StoreApp</a>
+    <nav class="main-nav"><a href="/#catalogo">Catálogo</a><a href="/#ofertas">Destacados</a></nav>
+    <div class="topbar-actions orders-page-actions">
+      <span id="orders-current-user" class="current-user"></span>
+      <button id="orders-logout" class="text-button" type="button">Salir</button>
+      <a class="secondary-button" href="/">Volver a la tienda</a>
+    </div>
+  </header>
+
+  <main class="orders-page-main">
+    <section class="orders-page-heading">
+      <div>
+        <p class="eyebrow">TU CUENTA STOREAPP</p>
+        <h1>Mis pedidos</h1>
+        <p>Consulta tus compras, el estado de entrega y la información del pago.</p>
+      </div>
+      <button type="button" id="refresh-orders" class="secondary-button">Actualizar pedidos</button>
+    </section>
+
+    <section class="account-summary orders-account-summary">
+      <div><span>Cuenta</span><strong id="account-name"></strong></div>
+      <div><span>Correo electrónico</span><strong id="account-email"></strong></div>
+    </section>
+    <div id="orders-message" class="message" role="status" aria-live="polite"></div>
+    <div id="orders-list" class="orders-list"><div class="empty-state">Cargando tus pedidos…</div></div>
+    <p class="orders-footnote">Los pedidos se conservan en tu historial. Si el administrador cancela uno, se elimina y sus unidades regresan al inventario.</p>
+  </main>
+
+  <footer><a class="brand footer-brand" href="/"><span class="brand-icon">S</span> StoreApp</a><p>Proyecto académico · Catálogo de productos</p><span>© <span id="orders-year"></span> StoreApp</span></footer>
+
+  <dialog id="payment-dialog" class="checkout-dialog payment-dialog">
+    <div class="dialog-heading"><div><p class="eyebrow">PAGO SEGURO</p><h2>Completar pago</h2></div><button type="button" id="close-payment" class="icon-button" aria-label="Cerrar">×</button></div>
+    <div class="payment-demo-summary" id="payment-order-summary"></div>
+    <div id="orders-payment-entry">
+      <div id="orders-card-fields" class="card-payment-fields">
+        <div class="card-preview"><span>StoreApp</span><strong id="orders-card-preview-number">•••• •••• •••• ••••</strong><div><span id="orders-card-preview-name">NOMBRE DEL TITULAR</span><span id="orders-card-preview-expiry">MM/AA</span></div></div>
+        <label>Nombre del titular<input id="orders-card-holder" autocomplete="off" maxlength="80" placeholder="Nombre como aparece en la tarjeta"></label>
+        <label>Número de tarjeta<input id="orders-card-number" inputmode="numeric" autocomplete="off" maxlength="19" placeholder="0000 0000 0000 0000"></label>
+        <div class="card-fields-row"><label>Vencimiento<input id="orders-card-expiry" inputmode="numeric" autocomplete="off" maxlength="5" placeholder="MM/AA"></label><label>CVV<input id="orders-card-cvv" type="password" inputmode="numeric" autocomplete="off" maxlength="4" placeholder="•••"></label></div>
+        <p class="test-card-hint">Ingresa los datos de una tarjeta con formato válido. Escribe los 16 dígitos de tu tarjeta.</p>
+      </div>
+      <div id="orders-transfer-fields" class="transfer-payment-fields hidden"><div class="transfer-instructions"><strong>Datos para realizar tu transferencia</strong><p>Realiza la transferencia desde tu aplicación bancaria con los siguientes datos:</p><div><span>Banco</span><strong id="orders-transfer-bank">Cargando…</strong></div><div><span>Beneficiario</span><strong id="orders-transfer-beneficiary">Cargando…</strong></div><div><span>CLABE</span><strong id="orders-transfer-clabe">Cargando…</strong></div><div id="orders-transfer-account-row"><span>Número de cuenta</span><strong id="orders-transfer-account"></strong></div><div><span>Importe</span><strong id="orders-transfer-amount"></strong></div><div><span>Referencia</span><strong id="orders-transfer-reference"></strong></div></div></div>
+      <div class="payment-security-note"><span>🔒</span><span>Los datos de tarjeta se validan en este formulario y no se envían ni se almacenan.</span></div>
+      <div id="payment-demo-message" class="message" role="status" aria-live="polite"></div>
+      <button type="button" id="orders-submit-payment" class="primary-button full-width">Pagar ahora</button>
+    </div>
+  </dialog>
+</body>
+</html>

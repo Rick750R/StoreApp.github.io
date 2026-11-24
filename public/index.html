@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Catálogo de tecnología con búsqueda, filtros y carrito de compras.">
+  <title>StoreApp | Catálogo de tecnología</title>
+  <link rel="preconnect" href="https://images.unsplash.com">
+  <link rel="stylesheet" href="/styles.css">
+  <script src="/app.js" defer></script>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="/" aria-label="StoreApp inicio"><span class="brand-icon">S</span> StoreApp</a>
+    <nav class="main-nav"><a href="#catalogo">Catálogo</a><a href="#ofertas">Destacados</a></nav>
+    <div class="topbar-actions">
+      <div id="guest-actions" class="auth-actions">
+        <button class="text-button" id="open-login">Iniciar sesión</button>
+        <button class="account-button" id="open-register">Crear cuenta</button>
+      </div>
+      <div id="user-actions" class="user-actions hidden">
+        <span id="current-user" class="current-user"></span>
+        <a href="/mis-pedidos.html" id="open-orders" class="orders-link" target="_blank" rel="noopener">Mis pedidos</a>
+        <a href="/admin.html" id="admin-link" class="admin-link hidden">Administrar</a>
+        <button id="logout-button" class="text-button">Salir</button>
+      </div>
+      <button class="cart-button" id="open-cart" aria-label="Abrir carrito">Carrito <span id="cart-count">0</span></button>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="hero-copy">
+        <p class="eyebrow">TECNOLOGÍA PARA TU DÍA A DÍA</p>
+        <h1>Encuentra lo que necesitas.</h1>
+        <p>Explora productos, compara precios y consulta su disponibilidad en un solo lugar.</p>
+        <a class="primary-link" href="#catalogo">Explorar catálogo <span aria-hidden="true">→</span></a>
+      </div>
+      <div class="hero-art" aria-hidden="true">
+        <div class="hero-circle"></div>
+        <div class="hero-label">TECNOLOGÍA<br><strong>PARA TODOS</strong></div>
+        <div class="floating-card">✦ Selección destacada</div>
+      </div>
+    </section>
+
+    <section class="benefits" aria-label="Beneficios">
+      <div><span>✓</span><div><strong>Disponibilidad visible</strong><small>Consulta las existencias</small></div></div>
+      <div><span>⌕</span><div><strong>Búsqueda sencilla</strong><small>Encuentra por nombre o categoría</small></div></div>
+      <div><span>♡</span><div><strong>Compra organizada</strong><small>Revisa tu carrito antes de pedir</small></div></div>
+    </section>
+
+    <section class="catalog-section" id="catalogo">
+      <div class="section-heading">
+        <div><p class="eyebrow">NUESTROS PRODUCTOS</p><h2>Explora el catálogo</h2></div>
+        <p id="results-count" class="muted">Cargando productos…</p>
+      </div>
+
+      <div class="filters">
+        <label class="search-box"><span aria-hidden="true">⌕</span><input id="search" type="search" placeholder="Buscar audífonos, laptops…" aria-label="Buscar productos"></label>
+        <label class="filter-label">Categoría
+          <select id="category"><option value="Todos">Todas las categorías</option></select>
+        </label>
+        <label class="filter-label">Precio mínimo
+          <input id="min-price" type="number" min="0" placeholder="$0">
+        </label>
+        <label class="filter-label">Precio máximo
+          <input id="max-price" type="number" min="0" placeholder="Sin límite">
+        </label>
+        <button id="clear-filters" class="secondary-button">Limpiar</button>
+      </div>
+
+      <div id="message" class="message" role="status" aria-live="polite"></div>
+      <div id="product-grid" class="product-grid"></div>
+    </section>
+
+    <section class="promo" id="ofertas">
+      <div><p class="eyebrow">SELECCIÓN STOREAPP</p><h2>Productos destacados</h2><p>Opciones seleccionadas para estudiar, trabajar y disfrutar.</p></div>
+      <a href="#catalogo">Ver productos <span aria-hidden="true">→</span></a>
+    </section>
+
+    <section class="support">
+      <div><p class="eyebrow">¿NECESITAS AYUDA?</p><h2>Estamos para orientarte.</h2><p>Esta versión académica permite explorar el catálogo, registrar pedidos y consultar su seguimiento.</p></div>
+      <div class="support-note"><strong>¿Tienes dudas?</strong><p>Consulta el estado de tus pedidos y recibe atención durante tu proceso de compra.</p></div>
+    </section>
+  </main>
+
+  <footer><a class="brand footer-brand" href="/"><span class="brand-icon">S</span> StoreApp</a><p>Proyecto académico · Catálogo de productos</p><span>© <span id="year"></span> StoreApp</span></footer>
+
+  <div class="overlay hidden" id="cart-overlay"></div>
+  <aside class="cart-panel" id="cart-panel" aria-label="Carrito de compras" aria-hidden="true">
+    <div class="cart-header"><div><p class="eyebrow">TU SELECCIÓN</p><h2>Carrito</h2></div><button id="close-cart" class="icon-button" aria-label="Cerrar carrito">×</button></div>
+    <div id="cart-items" class="cart-items"></div>
+    <div class="cart-footer"><div class="total-row"><span>Subtotal</span><strong id="cart-total">$0.00 MXN</strong></div><p class="small-note">El envío no está incluido. El pedido no se considera pagado.</p><button id="checkout-button" class="primary-button full-width">Continuar con pedido</button></div>
+  </aside>
+
+  <dialog id="auth-dialog" class="checkout-dialog auth-dialog">
+    <div class="dialog-heading"><div><p class="eyebrow">TU CUENTA STOREAPP</p><h2 id="auth-title">Iniciar sesión</h2></div><button type="button" id="close-auth" class="icon-button" aria-label="Cerrar">×</button></div>
+    <div class="auth-switch">
+      <button type="button" id="show-login" class="auth-tab active">Iniciar sesión</button>
+      <button type="button" id="show-register" class="auth-tab">Crear cuenta</button>
+    </div>
+    <form id="login-form" class="auth-form">
+      <p class="muted">Ingresa a tu cuenta para continuar con tu compra.</p>
+      <label>Correo electrónico<input name="correo" type="email" required maxlength="190" autocomplete="email" placeholder="tu@correo.com"></label>
+      <label>Contraseña<input name="password" type="password" required minlength="8" autocomplete="current-password" placeholder="Tu contraseña"></label>
+      <div id="login-message" class="message" role="status"></div>
+      <button class="primary-button full-width" type="submit">Entrar a mi cuenta</button>
+    </form>
+    <form id="register-form" class="auth-form hidden">
+      <p class="muted">Crea tu cuenta para guardar tus datos y consultar tus compras.</p>
+      <label>Nombre completo<input name="nombre" required minlength="2" maxlength="120" autocomplete="name" placeholder="Tu nombre"></label>
+      <label>Correo electrónico<input name="correo" type="email" required maxlength="190" autocomplete="email" placeholder="tu@correo.com"></label>
+      <label>Contraseña<input name="password" type="password" required minlength="8" maxlength="128" autocomplete="new-password" placeholder="Mínimo 8 caracteres"></label>
+      <div id="register-message" class="message" role="status"></div>
+      <button class="primary-button full-width" type="submit">Crear mi cuenta</button>
+    </form>
+  </dialog>
+
+  <dialog id="checkout-dialog" class="checkout-dialog">
+    <form id="checkout-form">
+      <div class="dialog-heading"><div><p class="eyebrow">ÚLTIMO PASO</p><h2>Confirmar pedido</h2></div><button type="button" id="close-checkout" class="icon-button" aria-label="Cerrar">×</button></div>
+      <p class="muted">Confirma tus datos y proporciona la dirección donde recibirás tus productos.</p>
+      <div class="checkout-account"><strong id="checkout-user-name"></strong><span id="checkout-user-email"></span></div>
+      <fieldset class="shipping-fieldset">
+        <legend>Dirección de entrega</legend>
+        <div class="shipping-form-grid">
+          <label class="shipping-wide">Nombre de quien recibe<input name="shippingName" required minlength="2" maxlength="120" autocomplete="name" placeholder="Nombre completo"></label>
+          <label>Teléfono de contacto<input name="shippingPhone" type="tel" required minlength="10" maxlength="20" autocomplete="tel" placeholder="Ej. 4421234567"></label>
+          <label>Código postal<input name="shippingPostalCode" inputmode="numeric" pattern="[0-9]{5}" required maxlength="5" autocomplete="postal-code" placeholder="5 dígitos"></label>
+          <label>Estado<input name="shippingState" required maxlength="100" autocomplete="address-level1" placeholder="Ej. Querétaro"></label>
+          <label>Municipio o alcaldía<input name="shippingMunicipality" required maxlength="100" autocomplete="address-level2" placeholder="Ej. Querétaro"></label>
+          <label>Colonia<input name="shippingNeighborhood" required maxlength="120" autocomplete="address-line2" placeholder="Nombre de la colonia"></label>
+          <label>Calle<input name="shippingStreet" required maxlength="150" autocomplete="street-address" placeholder="Nombre de la calle"></label>
+          <label>Número exterior<input name="shippingExterior" required maxlength="20" placeholder="Ej. 25"></label>
+          <label>Número interior (opcional)<input name="shippingInterior" maxlength="20" placeholder="Ej. 4B"></label>
+          <label class="shipping-wide">Referencias para localizar el domicilio (opcional)<textarea name="shippingReferences" maxlength="500" rows="2" placeholder="Entre qué calles, color de fachada, referencias, etc."></textarea></label>
+        </div>
+      </fieldset>
+      <fieldset class="payment-method-fieldset">
+        <legend>Método de pago</legend>
+        <label class="payment-method-option"><input type="radio" name="paymentMethod" value="tarjeta_demo" checked><span><strong>Tarjeta bancaria</strong><small>Crédito o débito · tarjetas compatibles</small></span></label>
+        <label class="payment-method-option"><input type="radio" name="paymentMethod" value="transferencia_demo"><span><strong>Transferencia</strong><small>Consulta los datos e instrucciones para completar tu pedido.</small></span></label>
+      </fieldset>
+      <p class="shipping-privacy-note">Tus datos de entrega se guardarán para este pedido. El registro del pago se realiza dentro de StoreApp; esta versión no procesa cargos bancarios reales.</p>
+      <div id="checkout-message" class="message" role="status"></div>
+      <button class="primary-button full-width" type="submit">Confirmar pedido</button>
+    </form>
+  </dialog>
+
+  <dialog id="payment-dialog" class="checkout-dialog payment-dialog">
+    <div class="dialog-heading"><div><p class="eyebrow">PAGO SEGURO</p><h2>Completar pago</h2></div><button type="button" id="close-payment" class="icon-button" aria-label="Cerrar">×</button></div>
+    <div class="payment-demo-summary" id="payment-order-summary"></div>
+    <div id="payment-entry">
+      <div id="card-payment-fields" class="card-payment-fields">
+        <div class="card-preview"><span>StoreApp</span><strong id="card-preview-number">•••• •••• •••• ••••</strong><div><span id="card-preview-name">NOMBRE DEL TITULAR</span><span id="card-preview-expiry">MM/AA</span></div></div>
+        <label>Nombre del titular<input id="card-holder" autocomplete="off" maxlength="80" placeholder="Nombre como aparece en la tarjeta"></label>
+        <label>Número de tarjeta<input id="card-number" inputmode="numeric" autocomplete="off" maxlength="19" placeholder="0000 0000 0000 0000"></label>
+        <div class="card-fields-row"><label>Vencimiento<input id="card-expiry" inputmode="numeric" autocomplete="off" maxlength="5" placeholder="MM/AA"></label><label>CVV<input id="card-cvv" type="password" inputmode="numeric" autocomplete="off" maxlength="4" placeholder="•••"></label></div>
+        <p class="test-card-hint">Ingresa los datos de una tarjeta con formato válido. Escribe los 16 dígitos de tu tarjeta.</p>
+      </div>
+      <div id="transfer-payment-fields" class="transfer-payment-fields hidden"><div class="transfer-instructions"><strong>Datos para realizar tu transferencia</strong><p>Realiza la transferencia desde tu aplicación bancaria con los siguientes datos:</p><div><span>Banco</span><strong id="transfer-bank">Cargando…</strong></div><div><span>Beneficiario</span><strong id="transfer-beneficiary">Cargando…</strong></div><div><span>CLABE</span><strong id="transfer-clabe">Cargando…</strong></div><div id="transfer-account-row"><span>Número de cuenta</span><strong id="transfer-account"></strong></div><div><span>Importe</span><strong id="transfer-amount"></strong></div><div><span>Referencia</span><strong id="transfer-reference">SA-000000</strong></div></div></div>
+      <div class="payment-security-note"><span>🔒</span><span>Los datos de tarjeta se validan en este formulario y no se envían ni se almacenan.</span></div>
+      <div id="payment-demo-message" class="message" role="status" aria-live="polite"></div>
+      <button type="button" id="submit-payment" class="primary-button full-width">Pagar ahora</button>
+    </div>
+    <section id="payment-success" class="payment-result-panel hidden" aria-live="polite">
+      <div class="payment-success-icon">✓</div><p class="eyebrow">OPERACIÓN COMPLETADA</p><h3>¡Tu compra se realizó correctamente!</h3><p id="payment-success-description">Hemos registrado tu pago.</p>
+      <div class="payment-receipt"><div><span>Número de pedido</span><strong id="receipt-order"></strong></div><div><span>Referencia de pago</span><strong id="receipt-reference"></strong></div><div><span>Total</span><strong id="receipt-total"></strong></div><div><span>Estado</span><strong class="receipt-approved">Aprobado</strong></div></div>
+      <p class="payment-demo-disclaimer">Registro de pago de StoreApp. Esta versión no realiza cargos bancarios.</p>
+      <a class="primary-button full-width payment-orders-link" href="/mis-pedidos.html" target="_blank" rel="noopener">Consultar mis pedidos</a>
+      <button type="button" id="continue-shopping" class="secondary-button full-width">Continuar comprando</button>
+    </section>
+  </dialog>
+
+  <dialog id="product-dialog" class="product-dialog">
+    <button type="button" id="close-product" class="icon-button dialog-close" aria-label="Cerrar detalle">×</button>
+    <div id="product-detail"></div>
+  </dialog>
+</body>
+</html>
